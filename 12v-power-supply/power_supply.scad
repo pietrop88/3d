@@ -4,7 +4,6 @@ psHeight = 218.6;
 psWall = 3.05;
 psBottomHoleHeight = 5.1;
 
-translate([ -10, -10, -10 ])
 powerSupply();
 
 module powerSupply()
