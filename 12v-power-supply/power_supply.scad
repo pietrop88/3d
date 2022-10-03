@@ -1,10 +1,6 @@
-psWidth = 104.8;
-psDepth = 63.5;
-psHeight = 218.6;
-psWall = 3.05;
-psBottomHoleHeight = 5.1;
-
-powerSupply();
+powerSupplySize = [ 104.8, 63.5, 218.6 ];
+powerSupplyBottomHoleDepth = 5.1;
+powerSupplyWall = 3.05;
 
 module powerSupply()
 {
@@ -14,10 +10,13 @@ module powerSupply()
 		{
 			difference()
 			{
-				cube([ psWidth, psDepth, psHeight ]); // main pad
-				translate([ psWall, 0, 0 ])           // bottom hole
+				cube(powerSupplySize);               // main pad
+				translate([ powerSupplyWall, 0, 0 ]) // bottom hole
 				{
-					cube([ psWidth - psWall * 2, psDepth - psWall, psBottomHoleHeight ]);
+					cube([
+						powerSupplySize.x - powerSupplyWall * 2, powerSupplySize.y - powerSupplyWall,
+						powerSupplyBottomHoleDepth
+					]);
 				}
 				sideScrews();
 				fanHole();
@@ -29,52 +28,51 @@ module powerSupply()
 	}
 }
 
-psSideHoleRadius = 1.5;
-psSideHoleBottomHeight = 33;
-psSideHoleTopHeight = psHeight - 32.8;
-psSideHoleFrontDepth = 13;
-psSideHoleBackDepth = psDepth - 12.5;
 module sideScrews()
 {
-
+	psSideHoleRadius = 1.5;
+	psSideHoleBottomHeight = 33;
+	psSideHoleTopHeight = powerSupplySize.z - 32.8;
+	psSideHoleFrontDepth = 13;
+	psSideHoleBackDepth = powerSupplySize.y - 12.5;
 	union()
 	{
-		translate([ psWidth / 2, psSideHoleFrontDepth, psSideHoleBottomHeight ])
+		translate([ powerSupplySize.x / 2, psSideHoleFrontDepth, psSideHoleBottomHeight ])
 		rotate([ 90, 0, 90 ])
-		cylinder(r = psSideHoleRadius, h = psWidth, center = true);
+		cylinder(r = psSideHoleRadius, h = powerSupplySize.x, center = true);
 
-		translate([ psWidth / 2, psSideHoleBackDepth, psSideHoleBottomHeight ])
+		translate([ powerSupplySize.x / 2, psSideHoleBackDepth, psSideHoleBottomHeight ])
 		rotate([ 90, 0, 90 ])
-		cylinder(r = psSideHoleRadius, h = psWidth, center = true);
+		cylinder(r = psSideHoleRadius, h = powerSupplySize.x, center = true);
 
-		translate([ psWidth / 2, psSideHoleFrontDepth, psSideHoleTopHeight ])
+		translate([ powerSupplySize.x / 2, psSideHoleFrontDepth, psSideHoleTopHeight ])
 		rotate([ 90, 0, 90 ])
-		cylinder(r = psSideHoleRadius, h = psWidth, center = true);
+		cylinder(r = psSideHoleRadius, h = powerSupplySize.x, center = true);
 
-		translate([ psWidth / 2, psSideHoleBackDepth, psSideHoleTopHeight ])
+		translate([ powerSupplySize.x / 2, psSideHoleBackDepth, psSideHoleTopHeight ])
 		rotate([ 90, 0, 90 ])
-		cylinder(r = psSideHoleRadius, h = psWidth, center = true);
+		cylinder(r = psSideHoleRadius, h = powerSupplySize.x, center = true);
 	}
 }
 
-psOutputHeight = 22.5;
 module outputSocket()
 {
-	translate([ 23.5, 33.5, -psOutputHeight + psBottomHoleHeight ]) // output socket
+	psOutputHeight = 22.5;
+	translate([ 23.5, 33.5, -psOutputHeight + powerSupplyBottomHoleDepth ]) // output socket
 	cube([ 68, 21, psOutputHeight ]);
 }
 
 psTopHoleHeight = 10;
-psFanRadius = 56.7 / 2;
 module fanHole()
 {
-	translate([ psWidth - psFanRadius - 7.5, psDepth / 2, psHeight - psTopHoleHeight ])
+	psFanRadius = 56.7 / 2;
+	translate([ powerSupplySize.x - psFanRadius - 7.5, powerSupplySize.y / 2, powerSupplySize.z - psTopHoleHeight ])
 	cylinder(r = psFanRadius, h = psTopHoleHeight);
 }
 
 module inputSocket()
 {
-	translate([ psWall, 40, psHeight ])
+	translate([ powerSupplyWall, 40, powerSupplySize.z ])
 	cube([ 34.8, 15, 11 ]);
 }
 
@@ -82,10 +80,10 @@ module fanScrews()
 {
 	union()
 	{
-		translate([ 45, 56.5, psHeight - psTopHoleHeight ])
+		translate([ 45, 56.5, powerSupplySize.z - psTopHoleHeight ])
 		cylinder(r = 5 / 2, h = psTopHoleHeight);
 
-		translate([ 20, 6, psHeight - psTopHoleHeight ])
+		translate([ 20, 6, powerSupplySize.z - psTopHoleHeight ])
 		cylinder(r = 1, h = psTopHoleHeight);
 	}
 }
